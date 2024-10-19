@@ -1,0 +1,10 @@
+name: JTEconomy
+
+version: 1.0.0
+api: 5.0.0
+
+src-namespace-prefix: te
+main: te\Economy
+
+author: JustTimmm
+website: https://github.com/JustTimmm
