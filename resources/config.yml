@@ -1,0 +1,7 @@
+default-money: 100
+
+money-command:
+  name: 'money'
+  description: 'money commands'
+  usage: '/money'
+  aliases: ['economy', 'moneyyy']

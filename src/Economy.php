@@ -7,25 +7,33 @@ use JsonException;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\utils\SingletonTrait;
+use te\listener\PlayerListener;
 
 class Economy extends PluginBase {
     use SingletonTrait;
 
-    private Config $cfg;
+    private Config $eco;
+    public  Config $cfg;
 
     protected function onEnable(): void {
         $this::setInstance($this);
+
+        $this->saveDefaultConfig();
         $this->saveResource('economy.json');
-        $this->cfg = new Config($this->getDataFolder() . 'economy.json', Config::JSON);
+
+        $this->cfg = new Config($this->getDataFolder() . 'config.yml',   Config::YAML);
+        $this->eco = new Config($this->getDataFolder() . 'economy.json', Config::JSON);
+
+        $this->getServer()->getPluginManager()->registerEvents(new PlayerListener(), $this);
     }
 
     public function hasAccount(string $player): bool {
-        return $this->cfg->exists($player);
+        return $this->eco->exists($player);
     }
 
     public function createAccount(string $player, float $default): void {
         if (!$this->hasAccount($player)) {
-            $this->cfg->set($player, $default);
+            $this->eco->set($player, $default);
         }
     }
 
@@ -34,28 +42,28 @@ class Economy extends PluginBase {
      */
     public function deleteAccount(string $player): void {
         if ($this->hasAccount($player)) {
-            $this->cfg->remove($player);
-            $this->cfg->save();
+            $this->eco->remove($player);
+            $this->eco->save();
         }
     }
 
     public function getAmount(string $player): float {
-        return $this->cfg->get($player);
+        return $this->eco->get($player);
     }
 
     public function addMoney(string $player, float $amount): void {
-        $this->cfg->set($player, $this->getAmount($player) + $amount);
+        $this->eco->set($player, $this->getAmount($player) + $amount);
     }
 
     public function removeMoney(string $player, float $amount): void {
-        $this->cfg->set($player, max(0, $this->getAmount($player) - $amount));
+        $this->eco->set($player, max(0, $this->getAmount($player) - $amount));
     }
 
     /**
      * @throws JsonException
      */
     public function setMoney(string $player, float $amount): void {
-        $this->cfg->set($player, $amount);
-        $this->cfg->save();
+        $this->eco->set($player, $amount);
+        $this->eco->save();
     }
 }
