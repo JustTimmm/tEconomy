@@ -1,0 +1,5 @@
+{
+    "require": {
+        "synopsie/iriss-command": "^2.1"
+    }
+}
