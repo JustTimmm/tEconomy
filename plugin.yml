@@ -8,3 +8,9 @@ main: te\Economy
 
 author: JustTimmm
 website: https://github.com/JustTimmm
+
+permissions:
+    money.command.player:
+        default: true
+    money.command.player.see:
+        default: true

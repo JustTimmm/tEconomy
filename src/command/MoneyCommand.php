@@ -4,18 +4,20 @@ namespace te\command;
 
 use iriss\CommandBase;
 use pocketmine\command\CommandSender;
-use te\Economy;
+use te\command\player\SeeMoneySub;
 
 class MoneyCommand extends CommandBase {
 
     public function __construct() {
         parent::__construct(
-            Economy::getInstance()->cfg->getNested('money-command.name'),
-            Economy::getInstance()->cfg->getNested('money-command.description'),
-            Economy::getInstance()->cfg->getNested('money-command.usage'),
-            [],
-            Economy::getInstance()->cfg->getNested('money-command.aliases')
+            'money',
+            'all money commands',
+            '/money <see|pay> <player>',
+            [
+                new SeeMoneySub()
+            ],
         );
+        $this->setPermission('money.command.player');
     }
 
     public function getCommandParameters(): array {

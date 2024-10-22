@@ -7,6 +7,7 @@ use JsonException;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\utils\SingletonTrait;
+use te\command\MoneyCommand;
 use te\listener\PlayerListener;
 
 class Economy extends PluginBase {
@@ -18,6 +19,8 @@ class Economy extends PluginBase {
     protected function onEnable(): void {
         $this::setInstance($this);
 
+        require $this->getFile() . 'vendor/autoload.php';
+
         $this->saveDefaultConfig();
         $this->saveResource('economy.json');
 
@@ -25,6 +28,10 @@ class Economy extends PluginBase {
         $this->eco = new Config($this->getDataFolder() . 'economy.json', Config::JSON);
 
         $this->getServer()->getPluginManager()->registerEvents(new PlayerListener(), $this);
+
+        $this->getServer()->getCommandMap()->registerAll('player', [
+            new MoneyCommand()
+        ]);
     }
 
     public function hasAccount(string $player): bool {
